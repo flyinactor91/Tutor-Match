@@ -24,8 +24,18 @@ python3 runserver.py
 
 ### Endpoints
 
+Users
+
+* /users
 * /users/count
+* /users/with/[skill]/count
 * /users/[user-type]/count
+* /users/[user-type]/with/[skill]/count
+
+Skills
+
+* /skills
+* /skills/count
 
 ### Vars
 
