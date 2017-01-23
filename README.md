@@ -28,8 +28,9 @@ Users
 
 * /users
 * /users/count
-* /users/with/[skill]/count
+* /users/[user-type]
 * /users/[user-type]/count
+* /users/with/[skill]/count
 * /users/[user-type]/with/[skill]/count
 
 Skills
