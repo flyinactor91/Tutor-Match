@@ -15,5 +15,31 @@
             ["tutor"],
             ["student"]
         ]
+    },
+    "Skill": {
+        "columns": ["name", "display_name"],
+        "rows": [
+            ["angular", "Angular"],
+            ["react", "React"],
+            ["nodejs", "Node.js"],
+            ["flask", "Flask"],
+            ["rubyonrails", "Ruby on Rails"]
+        ]
+    },
+    "User_Skill": {
+        "columns": ["user_id", "skill_id"],
+        "rows": [
+            [0, 0],
+            [0, 2],
+            [0, 3],
+            [1, 1],
+            [1, 4],
+            [2, 1],
+            [2, 3],
+            [2, 4],
+            [3, 1],
+            [3, 2],
+            [4, 3]
+        ]
     }
 }
