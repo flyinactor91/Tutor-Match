@@ -1,0 +1,19 @@
+{
+    "User": {
+        "columns": ["name", "utype"],
+        "rows": [
+            ["Alex", 0],
+            ["Bob", 1],
+            ["Cindy", 0],
+            ["David", 1],
+            ["Emily", 1]
+        ]
+    },
+    "User_Type": {
+        "columns": ["name"],
+        "rows": [
+            ["tutor"],
+            ["student"]
+        ]
+    }
+}
