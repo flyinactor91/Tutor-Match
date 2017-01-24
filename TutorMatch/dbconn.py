@@ -3,11 +3,12 @@ Michael duPont
 Controls connections to the database
 """
 
+import os
 import sqlite3
 from flask import g
 from TutorMatch import app
 
-DB_PATH = 'test.sqlite'
+DB_PATH = os.path.dirname(os.path.abspath(__file__))+'/test.sqlite'
 
 def make_dicts(curs: '', row):
     """Converts an SQLite row into a dict"""

@@ -8,7 +8,7 @@ import logging
 import sqlite3
 from json import load
 
-conn = sqlite3.connect('../test.sqlite')
+conn = sqlite3.connect('../TutorMatch/test.sqlite')
 curs = conn.cursor()
 dbdata = load(open('test_data.json'))
 
