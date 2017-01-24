@@ -30,17 +30,12 @@ Users
 * /users/count
 * /users/[user-type]
 * /users/[user-type]/count
+* /users/with/[skill]
 * /users/with/[skill]/count
+* /users/[user-type]/with/[skill]
 * /users/[user-type]/with/[skill]/count
 
 Skills
 
 * /skills
 * /skills/count
-
-### Vars
-
-User Types
-
-* tutor
-* student
