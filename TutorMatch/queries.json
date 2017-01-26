@@ -6,7 +6,7 @@
         "type-skill": "SELECT {} FROM User u, Skill s, User_Skill u_s WHERE u.id=u_s.user_id AND u_s.skill_id=s.id AND u.utype=? AND s.name=?"
     },
     "skills": {
-        "base": "SELECT {} FROM Skill",
+        "base": "SELECT {} FROM Skill s",
         "for-user": "SELECT {} FROM Skill s INNER JOIN User_Skill u_s ON s.id=u_s.skill_id WHERE u_s.user_id=?"
     }
 }

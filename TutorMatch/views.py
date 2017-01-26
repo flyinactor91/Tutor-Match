@@ -14,8 +14,8 @@ import TutorMatch.dbconn as db
 
 def output_str(func):
     """This decorator adds the 'raw' boolean keyword to functions.
-    When applied, the function's output will be converted to a string
-    unless the function call includes raw=True
+    When applied, the function's output will be converted to a JSON
+    string unless the function call includes raw=True
     """
     #This decorator allows us to use our custom decs alongside Flask's routing decs
     @functools.wraps(func)
@@ -32,7 +32,7 @@ def output_str(func):
 QUERIES = load(open(os.path.dirname(os.path.abspath(__file__))+'/queries.json'))
 
 USER_COLS = 'u.id, u.name, u.utype AS "type"'
-SKILL_COLS = 'name, display_name'
+SKILL_COLS = 's.name, s.display_name'
 COUNT = 'count(*)'
 
 ##--- Helper Functions ---##
@@ -42,7 +42,7 @@ def skills_for_user(user_id: int) -> [str]:
     query = QUERIES['skills']['for-user'].format('s.name')
     return [r[0] for r in db.query(query, (user_id,))]
 
-def get_skills_for_user_dict(udict: dict, remove_id: bool=True):
+def get_skills_for_user_dict(udict: dict, remove_id: bool=False):
     """Adds skills to a list of user dicts"""
     for i, user in enumerate(udict):
         udict[i]['skills'] = list(skills_for_user(user['id']))
@@ -50,11 +50,12 @@ def get_skills_for_user_dict(udict: dict, remove_id: bool=True):
             del udict[i]['id']
     return udict
 
-def get_users(subquery: str, args: tuple=None) -> [dict]:
+def get_users(subquery: str, args: tuple=None, ext: str='', one: bool=False) -> [dict]:
     """Returns a full list of users utilizing a given subquery key and value args"""
-    query = QUERIES['users'][subquery].format(USER_COLS)
+    query = QUERIES['users'][subquery].format(USER_COLS) + ext
     base = db.query(query, args, return_type='dict')
-    return get_skills_for_user_dict(base)
+    ret = get_skills_for_user_dict(base)
+    return ret[0] if one and ret else ret
 
 def get_count(table: str, subquery: str, args: tuple=None) -> int:
     """Returns the number of elements in a given table matching a given subquery key"""
@@ -80,6 +81,12 @@ def users() -> [dict]:
 def user_count() -> int:
     """Returns the total number of users"""
     return get_count('users', 'base')
+
+@app.route('/users/<int:uid>')
+@output_str
+def user_by_id(uid: int) -> dict:
+    """Returns a single user by id"""
+    return get_users('base', (uid,), ext=' WHERE u.id=?', one=True)
 
 @app.route('/users/<string:utype>')
 @output_str
@@ -131,3 +138,17 @@ def skills() -> [dict]:
 def skill_count() -> int:
     """Returns the total number of skills"""
     return get_count('skills', 'base')
+
+@app.route('/skills/<int:sid>')
+@output_str
+def skill_by_id(sid: int) -> dict:
+    """Returns a single skill by id"""
+    query = QUERIES['skills']['base'].format(SKILL_COLS) + ' WHERE s.id=?'
+    return db.query(query, (sid,), return_type='dict', one=True) or {}
+
+@app.route('/skills/<string:name>')
+@output_str
+def skill_by_name(name: str):
+    """Returns a single skill by name"""
+    query = QUERIES['skills']['base'].format(SKILL_COLS) + ' WHERE s.name=?'
+    return db.query(query, (name,), return_type='dict', one=True) or {}
